@@ -22,7 +22,6 @@
       padding:20px;
     }
     .box{
-      position:relative;
       width:100%;
       max-width:560px;
       background:var(--card);
@@ -42,19 +41,16 @@
       background:rgba(255,255,255,0.03);
       padding:10px 12px;border-radius:10px;margin:12px auto 18px;max-width:100%;color:var(--muted);
     }
-    .controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
-    button, a.btn{
+    .controls{display:flex;justify-content:center;}
+    button{
       appearance:none;border:0;padding:12px 16px;border-radius:10px;font-weight:600;
-      cursor:pointer;background:var(--accent);color:#001; text-decoration:none;
-    }
-    button.secondary, a.btn.secondary{
-      background:transparent;border:1px solid rgba(159,182,198,0.10);color:var(--muted);
+      cursor:pointer;background:var(--accent);color:#001;
     }
     .notice{font-size:13px;color:var(--muted);margin-top:14px}
 
-    /* Flecha roja animada */
+    /* Flecha roja animada (ahora en la esquina de la pantalla) */
     .arrow{
-      position:absolute;
+      position:fixed;
       top:10px;
       right:10px;
       width:0;
@@ -63,6 +59,7 @@
       border-right:12px solid transparent;
       border-bottom:20px solid red;
       animation:bounce 1.2s infinite;
+      z-index:9999;
     }
     @keyframes bounce {
       0%,20%,50%,80%,100% { transform: translateY(0); }
@@ -72,9 +69,10 @@
   </style>
 </head>
 <body>
-  <div class="box" role="main" aria-labelledby="titulo">
-    <div class="arrow"></div>
+  <!-- Flecha roja en la esquina de la pantalla -->
+  <div class="arrow"></div>
 
+  <div class="box" role="main" aria-labelledby="titulo">
     <!-- Logo encima del texto -->
     <img src="logo.png" alt="Logo" class="logo">
 
@@ -85,7 +83,6 @@
 
     <div class="controls">
       <button id="copyBtn" aria-label="Copiar enlace">Copiar enlace</button>
-      <a id="openBtn" class="btn secondary" href="https://t.me/+U3v7NGhiUlk5NDAx" target="_blank" rel="noopener noreferrer">Abrir en nueva pestaña</a>
     </div>
 
     <div class="notice" id="feedback" aria-live="polite" style="visibility:hidden">Enlace copiado ✓</div>
