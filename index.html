@@ -48,7 +48,7 @@
     }
     .notice{font-size:13px;color:var(--muted);margin-top:14px}
 
-    /* Flecha roja animada en la esquina de la pantalla */
+    /* Flecha roja animada (ahora en la esquina de la pantalla) */
     .arrow{
       position:fixed;
       top:10px;
@@ -96,15 +96,6 @@
   const linkBox = document.getElementById('linkBox');
 
   linkBox.textContent = target;
-
-  // Función para detectar si se está en TikTok
-  const ua = navigator.userAgent || navigator.vendor || window.opera;
-  const isTikTok = /TikTok/i.test(ua);
-
-  if (!isTikTok) {
-    // Si NO estamos en TikTok, redirige automáticamente al enlace de Telegram
-    window.location.href = target;
-  }
 
   function showMessage(msg, timeout=1600){
     feedback.textContent = msg;
