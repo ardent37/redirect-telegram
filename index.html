@@ -74,11 +74,10 @@
   </div>
 
   <div class="box" role="main" aria-labelledby="titulo">
-    <!-- Logo encima del texto -->
     <img src="logo.png" alt="Logo" class="logo">
 
     <h1 id="titulo">Para poder acceder al telegram, abre este enlace desde el navegador</h1>
-    <p id="sub" >Pulsa ⋯ y elige "Abrir en navegador" o copia el enlace y pégalo en Chrome/Safari.</p>
+    <p id="sub">Pulsa ⋯ y elige "Abrir en navegador" o copia el enlace y pégalo en Chrome/Safari.</p>
 
     <div class="link-box" id="linkBox">https://t.me/+U3v7NGhiUlk5NDAx</div>
 
@@ -103,19 +102,17 @@
   // Detectar sistema operativo
   const ua = navigator.userAgent || navigator.vendor || window.opera;
   const isiOS = /iPhone|iPad|iPod/i.test(ua);
-  const isAndroid = /Android/i.test(ua);
 
   // Detectar TikTok
   const isTikTok = /TikTok/i.test(ua);
 
   if (isiOS) {
     // iOS: siempre mostrar la página, no redirigir
-    // Cambiar texto
     subText.textContent = "Copia el enlace y pégalo en Chrome/Safari";
-    // Quitar flecha
     arrowContainer.style.display = 'none';
   } else {
-    // NO iOS: mostrar flecha y redirigir si no está en TikTok
+    // No iOS: mantener página como antes
+    // Redirigir solo si NO está en TikTok
     if (!isTikTok) {
       window.location.href = target;
     }
@@ -146,4 +143,3 @@
 </script>
 </body>
 </html>
-
