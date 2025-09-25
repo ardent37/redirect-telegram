@@ -22,6 +22,7 @@
       padding:20px;
     }
     .box{
+      position:relative;
       width:100%;
       max-width:560px;
       background:var(--card);
@@ -29,6 +30,10 @@
       padding:28px;
       box-shadow:0 10px 30px rgba(2,6,23,0.6);
       text-align:center;
+    }
+    .logo {
+      max-width:120px;
+      margin-bottom:16px;
     }
     h1{font-size:20px;margin:0 0 12px}
     p{margin:0 0 18px;color:var(--muted);line-height:1.45}
@@ -46,14 +51,37 @@
       background:transparent;border:1px solid rgba(159,182,198,0.10);color:var(--muted);
     }
     .notice{font-size:13px;color:var(--muted);margin-top:14px}
+
+    /* Flecha roja animada */
+    .arrow{
+      position:absolute;
+      top:10px;
+      right:10px;
+      width:0;
+      height:0;
+      border-left:12px solid transparent;
+      border-right:12px solid transparent;
+      border-bottom:20px solid red;
+      animation:bounce 1.2s infinite;
+    }
+    @keyframes bounce {
+      0%,20%,50%,80%,100% { transform: translateY(0); }
+      40% { transform: translateY(-8px); }
+      60% { transform: translateY(-4px); }
+    }
   </style>
 </head>
 <body>
   <div class="box" role="main" aria-labelledby="titulo">
-    <h1 id="titulo">Para poder acceder al telegram, abre este enlace desde el navegador</h1>
-    <p id="sub">Si al abrirlo desde TikTok se queda dentro de la app, pulsa ⋯ y elige "Abrir en navegador" o copia el enlace y pégalo en Chrome/Safari.</p>
+    <div class="arrow"></div>
 
-    <div class="link-box" id="linkBox">https://t.me/+eYIupROZPCgyNDI0</div>
+    <!-- Logo encima del texto -->
+    <img src="logo.png" alt="Logo" class="logo">
+
+    <h1 id="titulo">Para poder acceder al telegram, abre este enlace desde el navegador</h1>
+    <p id="sub">Pulsa ⋯ y elige "Abrir en navegador" o copia el enlace y pégalo en Chrome/Safari.</p>
+
+    <div class="link-box" id="linkBox">https://t.me/+U3v7NGhiUlk5NDAx</div>
 
     <div class="controls">
       <button id="copyBtn" aria-label="Copiar enlace">Copiar enlace</button>
@@ -83,16 +111,13 @@
       navigator.clipboard.writeText(target).then(function(){
         showMessage('Enlace copiado ✓');
       }).catch(function(){
-        // fallback
         prompt('Copia el enlace (Ctrl/Cmd+C):', target);
       });
     } else {
-      // very old browsers
       prompt('Copia el enlace (Ctrl/Cmd+C):', target);
     }
   });
 
-  // También permite copiar con teclado (accesibilidad)
   copyBtn.addEventListener('keydown', function(e){
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); copyBtn.click(); }
   });
