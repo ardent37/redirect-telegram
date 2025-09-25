@@ -47,8 +47,6 @@
       cursor:pointer;background:var(--accent);color:#001;
     }
     .notice{font-size:13px;color:var(--muted);margin-top:14px}
-
-    /* Flecha roja animada (solo para no-iOS) */
     .arrow{
       position:fixed;
       top:10px;
@@ -99,7 +97,7 @@
 
   linkBox.textContent = target;
 
-  // Detectar sistema operativo
+  // Detectar iOS
   const ua = navigator.userAgent || navigator.vendor || window.opera;
   const isiOS = /iPhone|iPad|iPod/i.test(ua);
 
@@ -107,12 +105,11 @@
   const isTikTok = /TikTok/i.test(ua);
 
   if (isiOS) {
-    // iOS: siempre mostrar la página, no redirigir
+    // iOS: mostrar la página siempre, sin flecha, texto simplificado
     subText.textContent = "Copia el enlace y pégalo en Chrome/Safari";
     arrowContainer.style.display = 'none';
   } else {
-    // No iOS: mantener página como antes
-    // Redirigir solo si NO está en TikTok
+    // NO iOS: comportamiento original que funciona en Android
     if (!isTikTok) {
       window.location.href = target;
     }
