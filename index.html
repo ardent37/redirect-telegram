@@ -48,7 +48,7 @@
     }
     .notice{font-size:13px;color:var(--muted);margin-top:14px}
 
-    /* Flecha roja animada en la esquina de la pantalla */
+    /* Flecha roja animada (solo para no-iOS) */
     .arrow{
       position:fixed;
       top:10px;
@@ -69,15 +69,16 @@
   </style>
 </head>
 <body>
-  <!-- Flecha roja en la esquina de la pantalla -->
-  <div class="arrow"></div>
+  <div id="arrow-container">
+    <div class="arrow"></div>
+  </div>
 
   <div class="box" role="main" aria-labelledby="titulo">
     <!-- Logo encima del texto -->
     <img src="logo.png" alt="Logo" class="logo">
 
     <h1 id="titulo">Para poder acceder al telegram, abre este enlace desde el navegador</h1>
-    <p id="sub">Pulsa ⋯ y elige "Abrir en navegador" o copia el enlace y pégalo en Chrome/Safari.</p>
+    <p id="sub" >Pulsa ⋯ y elige "Abrir en navegador" o copia el enlace y pégalo en Chrome/Safari.</p>
 
     <div class="link-box" id="linkBox">https://t.me/+U3v7NGhiUlk5NDAx</div>
 
@@ -94,16 +95,30 @@
   const copyBtn = document.getElementById('copyBtn');
   const feedback = document.getElementById('feedback');
   const linkBox = document.getElementById('linkBox');
+  const subText = document.getElementById('sub');
+  const arrowContainer = document.getElementById('arrow-container');
 
   linkBox.textContent = target;
 
-  // Función para detectar si se está en TikTok
+  // Detectar sistema operativo
   const ua = navigator.userAgent || navigator.vendor || window.opera;
+  const isiOS = /iPhone|iPad|iPod/i.test(ua);
+  const isAndroid = /Android/i.test(ua);
+
+  // Detectar TikTok
   const isTikTok = /TikTok/i.test(ua);
 
-  if (!isTikTok) {
-    // Si NO estamos en TikTok, redirige automáticamente al enlace de Telegram
-    window.location.href = target;
+  if (isiOS) {
+    // iOS: siempre mostrar la página, no redirigir
+    // Cambiar texto
+    subText.textContent = "Copia el enlace y pégalo en Chrome/Safari";
+    // Quitar flecha
+    arrowContainer.style.display = 'none';
+  } else {
+    // NO iOS: mostrar flecha y redirigir si no está en TikTok
+    if (!isTikTok) {
+      window.location.href = target;
+    }
   }
 
   function showMessage(msg, timeout=1600){
@@ -131,3 +146,4 @@
 </script>
 </body>
 </html>
+
