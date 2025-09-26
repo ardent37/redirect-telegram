@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Abrir en navegador</title>
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#071029;
+      --accent:#06b6d4;
+      --text:#e6eef8;
+      --muted:#9fb6c6;
+    }
+    html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;}
+    body{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(180deg,var(--bg),#061022);
+      color:var(--text);
+      padding:20px;
+    }
+    .box{
+      width:100%;
+      max-width:560px;
+      background:var(--card);
+      border-radius:14px;
+      padding:28px;
+      box-shadow:0 10px 30px rgba(2,6,23,0.6);
+      text-align:center;
+    }
+    .logo {
+      max-width:120px;
+      margin-bottom:16px;
+    }
+    h1{font-size:20px;margin:0 0 12px}
+    p{margin:0 0 18px;color:var(--muted);line-height:1.45}
+    .link-box{
+      word-break:break-all;
+      background:rgba(255,255,255,0.03);
+      padding:10px 12px;border-radius:10px;margin:12px auto 18px;max-width:100%;color:var(--muted);
+    }
+    .controls{display:flex;justify-content:center;}
+    button{
+      appearance:none;border:0;padding:12px 16px;border-radius:10px;font-weight:600;
+      cursor:pointer;background:var(--accent);color:#001;
+    }
+    .notice{font-size:13px;color:var(--muted);margin-top:14px}
+
+    /* Flecha roja animada (solo para no-iOS) */
+    .arrow{
+      position:fixed;
+      top:10px;
+      right:10px;
+      width:0;
+      height:0;
+      border-left:12px solid transparent;
+      border-right:12px solid transparent;
+      border-bottom:20px solid red;
+      animation:bounce 1.2s infinite;
+      z-index:9999;
+    }
+    @keyframes bounce {
+      0%,20%,50%,80%,100% { transform: translateY(0); }
+      40% { transform: translateY(-8px); }
+      60% { transform: translateY(-4px); }
+    }
+  </style>
+</head>
+<body>
+  <div id="arrow-container">
+    <div class="arrow"></div>
+  </div>
+
+  <div class="box" role="main" aria-labelledby="titulo">
+    <img src="logo.png" alt="Logo" class="logo">
+
+    <h1 id="titulo">Para poder acceder al telegram, abre este enlace desde el navegador</h1>
+    <p id="sub">Pulsa ⋯ y elige "Abrir en navegador" o copia el enlace y pégalo en Chrome/Safari.</p>
+
+    <div class="link-box" id="linkBox">https://t.me/+U3v7NGhiUlk5NDAx</div>
+
+    <div class="controls">
+      <button id="copyBtn" aria-label="Copiar enlace">Copiar enlace</button>
+    </div>
+
+    <div class="notice" id="feedback" aria-live="polite" style="visibility:hidden">Enlace copiado ✓</div>
+  </div>
+
+<script>
+(function(){
+  const target = 'https://t.me/+U3v7NGhiUlk5NDAx';
+  const copyBtn = document.getElementById('copyBtn');
+  const feedback = document.getElementById('feedback');
+  const linkBox = document.getElementById('linkBox');
+  const subText = document.getElementById('sub');
+  const arrowContainer = document.getElementById('arrow-container');
+
+  linkBox.textContent = target;
+
+  // Detectar sistema operativo
+  const ua = navigator.userAgent || navigator.vendor || window.opera;
+  const isiOS = /iPhone|iPad|iPod/i.test(ua);
+
+  // Detectar TikTok
+  const isTikTok = /TikTok/i.test(ua);
+
+  if (isiOS) {
+    // iOS: siempre mostrar la página, no redirigir
+    subText.textContent = "Copia el enlace y pégalo en Chrome/Safari";
+    arrowContainer.style.display = 'none';
+  } else {
+    // No iOS: mantener página como antes
+    // Redirigir solo si NO está en TikTok
+    if (!isTikTok) {
+      window.location.href = target;
+    }
+  }
+
+  function showMessage(msg, timeout=1600){
+    feedback.textContent = msg;
+    feedback.style.visibility = 'visible';
+    setTimeout(()=> feedback.style.visibility = 'hidden', timeout);
+  }
+
+  copyBtn.addEventListener('click', function(){
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(target).then(function(){
+        showMessage('Enlace copiado ✓');
+      }).catch(function(){
+        prompt('Copia el enlace (Ctrl/Cmd+C):', target);
+      });
+    } else {
+      prompt('Copia el enlace (Ctrl/Cmd+C):', target);
+    }
+  });
+
+  copyBtn.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); copyBtn.click(); }
+  });
+})();
+</script>
+</body>
+</html>
